@@ -9,8 +9,8 @@ python manage.py startapp solarwindapp
 python manage.py createsuperuser
 
 username : solarwindAdmin
-email    : talktoatharva14@gmail.com
-password : @solarwind123
+email    : uouremail
+password : yourpass
 
 
 
@@ -79,7 +79,7 @@ print(sys.version)
 import google.generativeai as genai
 import os
 
-genai.configure(api_key="AIzaSyDXX5WRHlWICkoQ71pcz4wnrd8TKbn-D-Y")
+genai.configure(api_key="api-key")
 model = genai.GenerativeModel('gemini-1.5-flash')
 response = model.generate_content("The opposite of hot is in 10 words")
 print(response.text)

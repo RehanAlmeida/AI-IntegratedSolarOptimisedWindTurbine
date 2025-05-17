@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="bg-gradient-to-br from-gray-100 to-purple-100 w-full my-4">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold mb-4">About Us</h1>
+
+        <p class="text-lg">SolarWind is an AI-driven prediction system that determines whether Solar or Wind power is optimal based on environmental factors.</p>
+
+        <div class="bg-white p-6 rounded-lg shadow-md mt-6">
+            <p class="text-lg">This project predicts the best power source (Solar/Wind) based on environmental factors such as wind speed, humidity, temperature, and wind direction.</p>
+
+            <h2 class="text-xl font-semibold mt-4">How It Works</h2>
+            <p>The system collects real-time environmental data and uses a trained Machine Learning model to predict whether Solar or Wind power is more efficient at a given moment.</p>
+
+
+            <h2 class="text-xl font-semibold mt-4">Model Details</h2>
+            <p>The model is a Random Forest Classifier trained on a dataset of 40,054 records, with an accuracy of 100%.</p>
+            <br>
+            <p>The model uses the following features:</p>
+            <ul>
+                <li class="ml-10"> --> Wind Speed</li>
+                <li class="ml-10"> --> Humidity</li>
+                <li class="ml-10"> --> Temperature</li>
+                <li class="ml-10"> --> Wind Direction</li>
+            </ul>
+            <br>
+            <p>The model was trained on a dataset with the following descriptive statistics:</p>
+            <table class="table-auto">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Min</th>
+                        <th>Max</th>
+                        <th>Mean</th>
+                        <th>Median</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Wind Speed</td>
+                        <td>0.000000</td>
+                        <td>3.720000</td>
+                        <td>0.461802</td>
+                        <td>0.350000</td>
+                    </tr>
+                    <tr>
+                        <td>Humidity</td>
+                        <td>21.370000</td>
+                        <td>95.950000</td>
+                        <td>73.082204</td>
+                        <td>75.380000</td>
+                    </tr>
+                    <tr>
+                        <td>Temperature</td>
+                        <td>21.120000</td>
+                        <td>38.860000</td>
+                        <td>28.355154</td>
+                        <td>28.460000</td>
+                    </tr>
+                    <tr>
+                        <td>Wind Direction</td>
+                        <td>0.000000</td>
+                        <td>359.900000</td>
+                        <td>195.927966</td>
+                        <td>189.100000</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 class="text-xl font-semibold mt-4">API</h2>
+            <p>The API endpoint is: <code>/uploadsensordata/?nodeid=123&dcv=12&dci=200&acv=210</code></p>
+            <p>The API takes the following parameters:</p>
+            <ul>
+                <li class="ml-10">--> nodeid: The ID of the node</li>
+                <li class="ml-10">--> dcv: The DC voltage reading</li>
+                <li class="ml-10">--> dci: The DC current reading</li>
+                <li class="ml-10">--> acv: The AC voltage reading</li>
+            </ul>
+
+            <h2 class="text-xl font-semibold mt-4">Disclaimer</h2>
+            <p>The predictions are based on historical data and may not always be 100% accurate.</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

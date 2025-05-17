@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+
+<!-- Auto Refresh Every 10 Sec -->
+<meta http-equiv="refresh" content="10">
+
+<h1 class="text-2xl font-bold mb-4">Dashboard</h1>
+
+<!-- Charts Section -->
+<div class="grid grid-cols-2 gap-6">
+    <!-- Time Series Data - Line Chart -->
+    <div class="bg-white p-6 rounded-lg shadow-md h-[40vh]">
+        <h2 class="text-lg font-semibold mb-3">Sensor Data Over Time</h2>
+        <canvas id="lineChart"></canvas>
+    </div>
+
+    <!-- Latest Record - Bar Chart -->
+    <div class="bg-white p-6 rounded-lg shadow-md h-[40vh]">
+        <h2 class="text-lg font-semibold mb-3">Latest Sensor Data</h2>
+        <canvas id="barChart"></canvas>
+    </div>
+</div>
+
+<!-- Sensor Data Table -->
+<div class="bg-white p-6 rounded-lg shadow-md mt-6">
+    <h2 class="text-lg font-semibold mb-3">Recent Sensor Data</h2>
+    <table class="table-auto w-full border">
+        <thead>
+            <tr>
+                <th class="px-4 py-2">Node ID</th>
+                <th class="px-4 py-2">DC Voltage</th>
+                <th class="px-4 py-2">DC Current</th>
+                <th class="px-4 py-2">AC Voltage</th>
+                <th class="px-4 py-2">Source</th>
+                <th class="px-4 py-2">Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in sensor_data %}
+            <tr>
+                <td class="border px-4 py-2">{{ data.nodeid }}</td>
+                <td class="border px-4 py-2">{{ data.dcvoltage }} V</td>
+                <td class="border px-4 py-2">{{ data.dccurrent }} mAh</td>
+                <td class="border px-4 py-2">{{ data.acvoltage }} V</td>
+
+
+                <td class="border px-4 py-2">
+                  {% if data.dcvoltage and data.dcvoltage > 8.9 %}
+                    Wind
+                  {% else %}
+                    Solar
+                  {% endif %}
+                </td>
+
+                
+                <td class="border px-4 py-2">{{ data.timestamp }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Charts.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // ✅ Time-Series Data for Line Chart
+        var timeLabels = [{% for data in sensor_data %} "{{ data.timestamp|date:'H:i:s' }}", {% endfor %}];
+        var dcVoltageData = [{% for data in sensor_data %} {{ data.dcvoltage }}, {% endfor %}];
+        var dcCurrentData = [{% for data in sensor_data %} {{ data.dccurrent }}, {% endfor %}];
+        var acVoltageData = [{% for data in sensor_data %} {{ data.acvoltage }}, {% endfor %}];
+
+        var ctxLine = document.getElementById('lineChart').getContext('2d');
+        new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: timeLabels.reverse(),
+                datasets: [
+                    {
+                        label: "DC Voltage (V)",
+                        data: dcVoltageData.reverse(),
+                        borderColor: "blue",
+                        backgroundColor: "rgba(0, 0, 255, 0.1)",
+                        fill: true
+                    },
+                    {
+                        label: "DC Current (A)",
+                        data: dcCurrentData.reverse(),
+                        borderColor: "red",
+                        backgroundColor: "rgba(255, 0, 0, 0.1)",
+                        fill: true
+                    },
+                    {
+                        label: "AC Voltage (V)",
+                        data: acVoltageData.reverse(),
+                        borderColor: "green",
+                        backgroundColor: "rgba(0, 255, 0, 0.1)",
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // ✅ Latest Record for Bar Chart
+        var latestRecord = {
+            labels: ["DC Voltage", "DC Current", "AC Voltage"],
+            datasets: [{
+                label: "Latest Sensor Data",
+                data: [
+                    {% if sensor_data %} {{ sensor_data.0.dcvoltage }}, {{ sensor_data.0.dccurrent }}, {{ sensor_data.0.acvoltage }} {% endif %}
+                ],
+                backgroundColor: ["blue", "red", "green"]
+            }]
+        };
+
+        var ctxBar = document.getElementById('barChart').getContext('2d');
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: latestRecord,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    });
+</script>
+
+{% endblock %}
+

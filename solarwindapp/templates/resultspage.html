@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Prediction Results</h1>
+
+{% if prediction %}
+<div class="bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold">Prediction ID: {{ prediction.mid }}</h2>
+    <p><strong>Wind Speed:</strong> {{ prediction.wind_speed }} m/s</p>
+    <p><strong>Humidity:</strong> {{ prediction.humidity }}%</p>
+    <p><strong>Temperature:</strong> {{ prediction.temperature }}°C</p>
+    <p><strong>Wind Direction:</strong> {{ prediction.wind_direction }}°</p>
+    <p class="text-lg font-bold mt-3">Predicted Power Source: {{ prediction.prediction }}</p>
+</div>
+{% else %}
+<h2 class="text-xl font-semibold">All Predictions</h2>
+<div class="grid grid-cols-3 gap-4">
+    {% for p in predictions %}
+    <div class="bg-white p-4 rounded-lg shadow-md">
+        <p><strong>Wind Speed:</strong> {{ p.wind_speed }} m/s</p>
+        <p><strong>Humidity:</strong> {{ p.humidity }}%</p>
+        <p><strong>Temperature:</strong> {{ p.temperature }}°C</p>
+        <p><strong>Wind Direction:</strong> {{ p.wind_direction }}°</p>
+        <p class="text-lg font-bold">Prediction: {{ p.prediction }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+
+<h1 class="text-2xl font-bold mb-4">Prediction Results</h1>
+
+<div class="grid grid-cols-3 gap-4">
+    <div class="bg-white p-4 rounded-lg shadow-md">
+        <p><strong>Wind Speed:</strong> {{ prediction.wind_speed }} m/s</p>
+        <p><strong>Humidity:</strong> {{ prediction.humidity }}%</p>
+        <p><strong>Temperature:</strong> {{ prediction.temperature }}°C</p>
+        <p><strong>Wind Direction:</strong> {{ prediction.wind_direction }}°</p>
+        <p class="text-lg font-bold">Prediction: {{ prediction.prediction }}</p>
+    </div>
+</div>
